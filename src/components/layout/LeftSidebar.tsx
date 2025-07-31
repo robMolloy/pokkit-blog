@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { pb } from "@/config/pocketbaseConfig";
-import { useAiThreadRecordsStore } from "@/modules/aiThreads/aiThreadRecordsStore";
 import { logout } from "@/modules/auth/dbAuthUtils";
 import { useUsersStore } from "@/modules/users/usersStore";
 import { useCurrentUserStore } from "@/stores/authDataStore";
@@ -11,8 +10,6 @@ import { ReactNode } from "react";
 import { CustomIcon } from "../CustomIcon";
 import { TooltipContent, TooltipProvider, TooltipTrigger } from "../ui/tooltip";
 import { MainLayout } from "./Layout";
-
-const uuid = () => crypto.randomUUID();
 
 const SidebarButtonWrapper = (p: { children: ReactNode; href?: string; disabled?: boolean }) => {
   return p.href ? (
@@ -81,10 +78,6 @@ const SidebarButton = (p: {
 
 export function LeftSidebar() {
   const router = useRouter();
-  const aiThreadRecordsStore = useAiThreadRecordsStore();
-  const threadFriendlyId = router.query.threadFriendlyId as string;
-
-  const currentThread = aiThreadRecordsStore.data?.find((x) => x.friendlyId === threadFriendlyId);
 
   const currentUserStore = useCurrentUserStore();
   const usersStore = useUsersStore();
@@ -98,36 +91,10 @@ export function LeftSidebar() {
             <SidebarButton href="/" iconName={"Home"} isHighlighted={router.pathname === "/"}>
               Home
             </SidebarButton>
-
-            <SidebarButton
-              iconName="Brain"
-              isHighlighted={!currentThread && !!threadFriendlyId}
-              onClick={() => router.push(`/ai-chat/${uuid()}`)}
-            >
-              AI Chat
-            </SidebarButton>
           </div>
         </div>
         <div className="relative flex-1">
-          <div className="absolute inset-0 flex flex-col gap-1 overflow-y-auto p-2">
-            {aiThreadRecordsStore.data
-              ?.sort((a, b) => (a.updated < b.updated ? 1 : -1))
-              .map((x) => {
-                const label = x.title ? x.title : x.friendlyId;
-                return (
-                  <SidebarButton
-                    key={x.friendlyId}
-                    isHighlighted={x.friendlyId === threadFriendlyId}
-                    onClick={() => router.push(`/ai-chat/${x.friendlyId}`)}
-                    tooltipContent={label}
-                  >
-                    <div className="w-full overflow-hidden text-ellipsis whitespace-nowrap">
-                      {label}
-                    </div>
-                  </SidebarButton>
-                );
-              })}
-          </div>
+          <div className="absolute inset-0 flex flex-col gap-1 overflow-y-auto p-2"></div>
         </div>
 
         <div className="border-t p-2">

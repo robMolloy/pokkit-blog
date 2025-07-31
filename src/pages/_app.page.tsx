@@ -1,13 +1,6 @@
 import { Layout } from "@/components/layout/Layout";
 import { pb } from "@/config/pocketbaseConfig";
-import { useAiTextMessageRecordsStore } from "@/modules/aiTextMessages/aiTextMessageRecordsStore";
-import { smartSubscribeToAiTextMessageRecords } from "@/modules/aiTextMessages/dbAiTextMessageUtils";
-import { useAiThreadRecordsStore } from "@/modules/aiThreads/aiThreadRecordsStore";
-import { smartSubscribeToAiThreadRecords } from "@/modules/aiThreads/dbAiThreadRecordUtils";
 import { AuthForm } from "@/modules/auth/AuthForm";
-import { useAnthropicStoreSync } from "@/modules/providers/anthropicStore";
-import { smartSubscribeToProviderRecords } from "@/modules/providers/dbProviderRecordsUtils";
-import { useProviderRecordsStore } from "@/modules/providers/providerRecordsStore";
 import { smartSubscribeToUsers, subscribeToUser } from "@/modules/users/dbUsersUtils";
 import { useUsersStore } from "@/modules/users/usersStore";
 import { LoadingScreen } from "@/screens/LoadingScreen";
@@ -71,34 +64,14 @@ const useAuth = (p: {
 export default function App({ Component, pageProps }: AppProps) {
   const themeStore = useThemeStore();
   const usersStore = useUsersStore();
-  const providerRecordsStore = useProviderRecordsStore();
   const currentUserStore = useCurrentUserStore();
-  const aiThreadRecordsStore = useAiThreadRecordsStore();
-  const aiTextMessageRecordsStore = useAiTextMessageRecordsStore();
 
   themeStore.useThemeStoreSideEffect();
-
-  useAnthropicStoreSync();
 
   useAuth({
     onIsLoading: () => {},
     onIsLoggedIn: () => {
       smartSubscribeToUsers({ pb, onChange: (x) => usersStore.setData(x) });
-      smartSubscribeToProviderRecords({
-        pb,
-        onChange: (x) => providerRecordsStore.setData(x),
-        onError: () => providerRecordsStore.setData(null),
-      });
-      smartSubscribeToAiThreadRecords({
-        pb,
-        onChange: (x) => aiThreadRecordsStore.setData(x),
-        onError: () => aiThreadRecordsStore.setData(null),
-      });
-      smartSubscribeToAiTextMessageRecords({
-        pb,
-        onChange: (x) => aiTextMessageRecordsStore.setData(x),
-        onError: () => aiTextMessageRecordsStore.setData(null),
-      });
     },
     onIsLoggedOut: () => {},
   });
