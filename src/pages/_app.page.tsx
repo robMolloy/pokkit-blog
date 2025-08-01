@@ -84,7 +84,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Layout
         showLeftSidebar={
           currentUserStore.data.status === "loggedIn" &&
-          ["approved", "admin"].includes(currentUserStore.data.user.status)
+          ["approved", "admin"].includes(currentUserStore.data.user.role)
         }
       >
         {(() => {
@@ -103,9 +103,9 @@ export default function App({ Component, pageProps }: AppProps) {
             return;
           }
 
-          if (currentUserStore.data.user.status === "pending") return <div>awaiting approval</div>;
+          if (currentUserStore.data.user.role === "pending") return <div>awaiting approval</div>;
 
-          if (currentUserStore.data.user.status === "denied") return <div>blocked</div>;
+          if (currentUserStore.data.user.role === "denied") return <div>blocked</div>;
 
           return <Component {...pageProps} />;
         })()}

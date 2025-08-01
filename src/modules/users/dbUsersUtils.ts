@@ -7,7 +7,7 @@ export const userSchema = z.object({
   id: z.string(),
   email: z.string(),
   name: z.string(),
-  status: z.enum(["pending", "admin", "approved", "denied"]),
+  role: z.enum(["pending", "admin", "approved", "denied"]),
   created: z.string(),
   updated: z.string(),
 });
@@ -104,7 +104,7 @@ export const smartSubscribeToUsers = async (p: {
 export const updateUserStatus = async (p: {
   pb: PocketBase;
   id: string;
-  status: TUser["status"];
+  status: TUser["role"];
 }) => {
   try {
     const resp = await p.pb.collection("users").update(p.id, { status: p.status });

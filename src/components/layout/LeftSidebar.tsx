@@ -81,7 +81,7 @@ export function LeftSidebar() {
 
   const currentUserStore = useCurrentUserStore();
   const usersStore = useUsersStore();
-  const pendingUsersCount = usersStore.data.filter((user) => user.status === "pending").length;
+  const pendingUsersCount = usersStore.data.filter((user) => user.role === "pending").length;
 
   return (
     <MainLayout fillPageExactly padding={false}>
@@ -100,7 +100,7 @@ export function LeftSidebar() {
         <div className="border-t p-2">
           <div className="flex flex-col gap-1">
             {currentUserStore.data.status === "loggedIn" &&
-              currentUserStore.data.user.status === "admin" && (
+              currentUserStore.data.user.role === "admin" && (
                 <SidebarButton
                   href="/users"
                   iconName="Users"

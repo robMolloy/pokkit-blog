@@ -25,7 +25,7 @@ import { CustomIcon } from "@/components/CustomIcon";
 import { MainLayout } from "@/components/layout/Layout";
 import { H1 } from "@/components/ui/defaultComponents";
 
-type TUserStatus = TUser["status"];
+type TUserStatus = TUser["role"];
 const statusColorClassMap: { [k in TUserStatus]: string } = {
   pending: "bg-muted",
   admin: "bg-purple-600",
@@ -41,15 +41,15 @@ const UserStateSelect = (p: {
   return (
     <>
       <Select
-        value={p.user.status}
-        onValueChange={(status: TUserStatus) => p.onStatusChange({ ...p.user, status })}
+        value={p.user.role}
+        onValueChange={(status: TUserStatus) => p.onStatusChange({ ...p.user, role: status })}
         disabled={p.disabled}
       >
-        <SelectTrigger className={`w-[180px] ${statusColorClassMap[p.user.status]}`}>
+        <SelectTrigger className={`w-[180px] ${statusColorClassMap[p.user.role]}`}>
           <SelectValue placeholder="Select status" />
         </SelectTrigger>
         <SelectContent>
-          {p.user.status === "pending" && <SelectItem value="pending">Pending</SelectItem>}
+          {p.user.role === "pending" && <SelectItem value="pending">Pending</SelectItem>}
           <SelectItem value="admin">Admin</SelectItem>
           <SelectItem value="approved">Approved</SelectItem>
           <SelectItem value="denied">Denied</SelectItem>
@@ -94,10 +94,8 @@ const UsersPage = () => {
                       modalStore.setData(
                         <ConfirmationModalContent
                           title="Update status"
-                          description={`Are you sure you want to change the status of ${user.name} to ${user.status}?`}
-                          onConfirm={() =>
-                            updateUserStatus({ pb, id: user.id, status: user.status })
-                          }
+                          description={`Are you sure you want to change the status of ${user.name} to ${user.role}?`}
+                          onConfirm={() => updateUserStatus({ pb, id: user.id, status: user.role })}
                         />,
                       );
                     }}
