@@ -110,6 +110,16 @@ export function LeftSidebar() {
                   Users
                 </SidebarButton>
               )}
+            {currentUserStore.data.status === "loggedIn" &&
+              currentUserStore.data.user.role === "admin" && (
+                <SidebarButton
+                  href="/blog-admin"
+                  iconName="Pencil"
+                  isHighlighted={router.pathname === "/blog-admin"}
+                >
+                  Blog Admin
+                </SidebarButton>
+              )}
             <SidebarButton iconName="LogOut" isHighlighted={false} onClick={() => logout({ pb })}>
               Log Out
             </SidebarButton>
