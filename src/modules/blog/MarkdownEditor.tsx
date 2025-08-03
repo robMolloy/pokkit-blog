@@ -9,7 +9,9 @@ const initText = `heading
 hiya mate \`hrllo one\`
     
 [here is an external link to google.com](google.com) 
+
 [here is an internal link to home](/) 
+
 ![here is a photo](http://localhost:3000/test.png)
     
 two three world`;
@@ -99,22 +101,25 @@ export const MarkdownEditor = () => {
     const cursorPositionOnCurrentLine =
       cursorSelectionStart - textBeforeCursor.lastIndexOf("\n") - 1;
     const isCursorWithinTag = cursorPositionOnCurrentLine <= p.tag.length;
-    const isTagRemoved = editedCurrentLine.length < currentLine.length;
+    const isTagAdded = editedCurrentLine.length > currentLine.length;
 
-    const tagLengthChange = p.tag.length * (isTagRemoved ? -1 : 1);
-    const newSelectionStart =
-      isCursorWithinTag && isTagRemoved
-        ? cursorSelectionStart - cursorPositionOnCurrentLine
-        : cursorSelectionStart + tagLengthChange;
-    const newSelectionEnd =
-      isCursorWithinTag && isTagRemoved
-        ? cursorSelectionEnd - cursorPositionOnCurrentLine
-        : cursorSelectionEnd + tagLengthChange;
+    const newCursorPositions = (() => {
+      if (isCursorWithinTag && !isTagAdded)
+        return {
+          newSelectionStart: cursorSelectionStart - cursorPositionOnCurrentLine,
+          newSelectionEnd: cursorSelectionEnd - cursorPositionOnCurrentLine,
+        };
 
-    setCursorSelectionStart(newSelectionStart);
-    setCursorSelectionEnd(newSelectionEnd);
+      return {
+        newSelectionStart: cursorSelectionStart + (isTagAdded ? p.tag.length : -p.tag.length),
+        newSelectionEnd: cursorSelectionEnd + (isTagAdded ? p.tag.length : -p.tag.length),
+      };
+    })();
 
-    focusCursor({ newSelectionStart, newSelectionEnd });
+    setCursorSelectionStart(newCursorPositions.newSelectionStart);
+    setCursorSelectionEnd(newCursorPositions.newSelectionEnd);
+
+    focusCursor(newCursorPositions);
   };
 
   return (
