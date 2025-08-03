@@ -1,6 +1,5 @@
 import { Header } from "./Header";
 import { LeftSidebar } from "./LeftSidebar";
-import { Modal } from "../Modal";
 
 export const MainLayout = (p: {
   children: React.ReactNode;
@@ -9,25 +8,24 @@ export const MainLayout = (p: {
 }) => {
   const padding = p.padding ?? true;
   return (
-    <div className={`${p.fillPageExactly ? "h-full" : "min-h-full"} ${padding ? "p-6" : ""}`}>
+    <main className={`${p.fillPageExactly ? "h-full" : "min-h-full"} ${padding ? "p-6" : ""}`}>
       {p.children}
-    </div>
+    </main>
   );
 };
 
 export function Layout(p: { children: React.ReactNode; showLeftSidebar: boolean }) {
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div className="relative flex h-screen flex-col">
       <Header />
-      <div className="flex flex-1">
+      <div className="flex min-h-0 flex-1">
         {p.showLeftSidebar && (
-          <aside className="min-h-full w-96 overflow-y-auto border-r">
+          <aside className="min-h-full w-64 overflow-y-auto border-r">
             <LeftSidebar />
           </aside>
         )}
-        <main className="min-h-full w-full overflow-y-auto">{p.children}</main>
+        <div className="min-h-0 flex-1 overflow-y-auto">{p.children}</div>
       </div>
-      <Modal />
     </div>
   );
 }
