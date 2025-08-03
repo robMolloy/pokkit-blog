@@ -1,10 +1,12 @@
 import { CustomIcon } from "@/components/CustomIcon";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { FormEvent, useRef, useState } from "react";
-import { DisplayMarkdown } from "./DisplayMarkdown";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
-const initText = `heading 
+const initText = `
+# heading1
+## heading2
+### heading3  
     
 hiya mate \`hrllo one\`
     
@@ -16,7 +18,7 @@ hiya mate \`hrllo one\`
     
 two three world`;
 
-export const MarkdownEditor = () => {
+export const MarkdownEditor = (p: { onChange: (text: string) => void }) => {
   const [text, setText] = useState(initText);
   const [cursorSelectionStart, setCursorSelectionStart] = useState(0);
   const [cursorSelectionEnd, setCursorSelectionEnd] = useState(0);
@@ -26,6 +28,8 @@ export const MarkdownEditor = () => {
     setCursorSelectionStart(e.currentTarget.selectionStart);
     setCursorSelectionEnd(e.currentTarget.selectionEnd);
   };
+
+  useEffect(() => p.onChange(text), [text]);
 
   const focusCursor = (p: { newSelectionStart: number; newSelectionEnd: number }) => {
     setTimeout(() => {
@@ -151,11 +155,7 @@ export const MarkdownEditor = () => {
         {/* <Button onClick={() => wrapTags({ tagOpen: "[", tagClose: "]()" })}>
           <CustomIcon iconName="List" size="md" />
         </Button> */}
-        {/* 
-        // Install remark-gfm for additional control
-        <Button onClick={() => addWrappingTags({ tagOpen: "~~", tagClose: "~~" })}>
-          <CustomIcon iconName="Strikethrough" size="md" />
-        </Button> */}
+        {/* Install remark-gfm for additional control */}
       </div>
       <Textarea
         ref={textareaElmRef}
@@ -169,9 +169,6 @@ export const MarkdownEditor = () => {
         onMouseUp={(e) => handleCursorMove(e)}
         className="min-h-48 font-mono text-sm"
       />
-      <pre>{JSON.stringify({ cursorSelectionStart, cursorSelectionEnd }, undefined, 2)}</pre>
-
-      <DisplayMarkdown>{text}</DisplayMarkdown>
     </div>
   );
 };
