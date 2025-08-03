@@ -84,25 +84,32 @@ export const MarkdownEditor = () => {
     const newlinesBeforeCursor = (textBeforeCursor.match(/\n/g) || []).length;
     const currentLineIndex = newlinesBeforeCursor;
 
-    const textBeforeLine =
-      linesArray.slice(0, currentLineIndex).join("\n") + (currentLineIndex > 0 ? "\n" : "");
-    const currentLine = linesArray[currentLineIndex] || "";
-    const textAfterLine =
-      linesArray.slice(currentLineIndex + 1).length > 0
-        ? "\n" + linesArray.slice(currentLineIndex + 1).join("\n")
-        : "";
+    const linesBeforeCurrentLine = linesArray.slice(0, currentLineIndex);
+    const currentLine = linesArray[currentLineIndex] ?? "";
+    const linesAfterCurrentLine = linesArray.slice(currentLineIndex + 1);
 
-    const editedLine = currentLine.startsWith(p.tag)
+    const editedCurrentLine = currentLine.startsWith(p.tag)
       ? currentLine.slice(p.tag.length)
       : `${p.tag}${currentLine}`;
 
-    setText(`${textBeforeLine}${editedLine}${textAfterLine}`);
+    const editedText = [...linesBeforeCurrentLine, editedCurrentLine, ...linesAfterCurrentLine];
 
-    const isTagRemoved = editedLine.length < currentLine.length;
+    setText(editedText.join("\n"));
+
+    const cursorPositionOnCurrentLine =
+      cursorSelectionStart - textBeforeCursor.lastIndexOf("\n") - 1;
+    const isCursorWithinTag = cursorPositionOnCurrentLine <= p.tag.length;
+    const isTagRemoved = editedCurrentLine.length < currentLine.length;
 
     const tagLengthChange = p.tag.length * (isTagRemoved ? -1 : 1);
-    const newSelectionStart = cursorSelectionStart + tagLengthChange;
-    const newSelectionEnd = cursorSelectionEnd + tagLengthChange;
+    const newSelectionStart =
+      isCursorWithinTag && isTagRemoved
+        ? cursorSelectionStart - cursorPositionOnCurrentLine
+        : cursorSelectionStart + tagLengthChange;
+    const newSelectionEnd =
+      isCursorWithinTag && isTagRemoved
+        ? cursorSelectionEnd - cursorPositionOnCurrentLine
+        : cursorSelectionEnd + tagLengthChange;
 
     setCursorSelectionStart(newSelectionStart);
     setCursorSelectionEnd(newSelectionEnd);
@@ -157,6 +164,7 @@ export const MarkdownEditor = () => {
         onMouseUp={(e) => handleCursorMove(e)}
         className="min-h-48 font-mono text-sm"
       />
+      <pre>{JSON.stringify({ cursorSelectionStart, cursorSelectionEnd }, undefined, 2)}</pre>
 
       <DisplayMarkdown>{text}</DisplayMarkdown>
     </div>
