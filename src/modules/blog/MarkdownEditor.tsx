@@ -20,9 +20,9 @@ export const MarkdownEditor = (p: { value: string; onChange: (text: string) => v
   const focusCursor = (p: { newSelectionStart: number; newSelectionEnd: number }) => {
     setTimeout(() => {
       if (!textareaElmRef.current) return;
-      textareaElmRef.current.focus();
       textareaElmRef.current.selectionStart = p.newSelectionStart;
       textareaElmRef.current.selectionEnd = p.newSelectionEnd;
+      textareaElmRef.current.focus();
     }, 50);
   };
 
