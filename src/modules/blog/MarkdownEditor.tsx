@@ -23,7 +23,7 @@ export const MarkdownEditor = (p: { value: string; onChange: (text: string) => v
       textareaElmRef.current.selectionStart = p.newSelectionStart;
       textareaElmRef.current.selectionEnd = p.newSelectionEnd;
       textareaElmRef.current.focus();
-    }, 50);
+    }, 0);
   };
 
   const wrapTags = (p: { tagOpen: string; tagClose: string }) => {
@@ -34,14 +34,9 @@ export const MarkdownEditor = (p: { value: string; onChange: (text: string) => v
     const textHighlighted = internalValue.substring(cursorSelectionStart, cursorSelectionEnd);
     const textAfter = internalValue.substring(cursorSelectionEnd);
 
-    const tagOpensInTextBefore = textBefore.split(tagOpen).length - 1;
-    const tagClosesInTextBefore = textBefore.split(tagClose).length - 1;
-
     const isDirectlyInsideTag =
       textBefore.slice(0 - tagOpen.length) === tagOpen &&
       textAfter.slice(0, tagClose.length) === tagClose;
-
-    const isOpenTags = tagOpensInTextBefore === tagClosesInTextBefore;
 
     const resp = (() => {
       if (isDirectlyInsideTag) {
@@ -53,13 +48,11 @@ export const MarkdownEditor = (p: { value: string; onChange: (text: string) => v
         const newSelectionEnd = cursorSelectionEnd - tagOpen.length;
         return { newSelectionStart, newSelectionEnd };
       }
-      const tag1 = isOpenTags ? tagOpen : tagClose;
-      const tag2 = isOpenTags ? tagClose : tagOpen;
 
-      setInternalValue(`${textBefore}${tag1}${textHighlighted}${tag2}${textAfter}`);
+      setInternalValue(`${textBefore}${tagOpen}${textHighlighted}${tagClose}${textAfter}`);
 
-      const newSelectionStart = cursorSelectionStart + tag1.length;
-      const newSelectionEnd = cursorSelectionEnd + tag1.length;
+      const newSelectionStart = cursorSelectionStart + tagOpen.length;
+      const newSelectionEnd = cursorSelectionEnd + tagOpen.length;
 
       return { newSelectionStart, newSelectionEnd };
     })();
