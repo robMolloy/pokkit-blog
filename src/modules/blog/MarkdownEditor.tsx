@@ -3,23 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
-const initText = `
-# heading1
-## heading2
-### heading3  
-    
-hiya mate \`hrllo one\`
-    
-[here is an external link to google.com](google.com) 
-
-[here is an internal link to home](/) 
-
-![here is a photo](http://localhost:3000/test.png)
-    
-two three world`;
-
-export const MarkdownEditor = (p: { onChange: (text: string) => void }) => {
-  const [text, setText] = useState(initText);
+export const MarkdownEditor = (p: { value: string; onChange: (text: string) => void }) => {
+  const [internalValue, setInternalValue] = useState(p.value ?? "");
   const [cursorSelectionStart, setCursorSelectionStart] = useState(0);
   const [cursorSelectionEnd, setCursorSelectionEnd] = useState(0);
   const textareaElmRef = useRef<HTMLTextAreaElement>(null);
@@ -29,7 +14,8 @@ export const MarkdownEditor = (p: { onChange: (text: string) => void }) => {
     setCursorSelectionEnd(e.currentTarget.selectionEnd);
   };
 
-  useEffect(() => p.onChange(text), [text]);
+  useEffect(() => setInternalValue(p.value), [p.value]);
+  useEffect(() => p.onChange(internalValue), [internalValue]);
 
   const focusCursor = (p: { newSelectionStart: number; newSelectionEnd: number }) => {
     setTimeout(() => {
@@ -44,9 +30,9 @@ export const MarkdownEditor = (p: { onChange: (text: string) => void }) => {
     const tagOpen = p.tagOpen;
     const tagClose = p.tagClose;
 
-    const textBefore = text.substring(0, cursorSelectionStart);
-    const textHighlighted = text.substring(cursorSelectionStart, cursorSelectionEnd);
-    const textAfter = text.substring(cursorSelectionEnd);
+    const textBefore = internalValue.substring(0, cursorSelectionStart);
+    const textHighlighted = internalValue.substring(cursorSelectionStart, cursorSelectionEnd);
+    const textAfter = internalValue.substring(cursorSelectionEnd);
 
     const tagOpensInTextBefore = textBefore.split(tagOpen).length - 1;
     const tagClosesInTextBefore = textBefore.split(tagClose).length - 1;
@@ -59,7 +45,7 @@ export const MarkdownEditor = (p: { onChange: (text: string) => void }) => {
 
     const resp = (() => {
       if (isDirectlyInsideTag) {
-        setText(
+        setInternalValue(
           `${textBefore.slice(0, -tagOpen.length)}${textHighlighted}${textAfter.slice(tagClose.length)}`,
         );
 
@@ -70,7 +56,7 @@ export const MarkdownEditor = (p: { onChange: (text: string) => void }) => {
       const tag1 = isOpenTags ? tagOpen : tagClose;
       const tag2 = isOpenTags ? tagClose : tagOpen;
 
-      setText(`${textBefore}${tag1}${textHighlighted}${tag2}${textAfter}`);
+      setInternalValue(`${textBefore}${tag1}${textHighlighted}${tag2}${textAfter}`);
 
       const newSelectionStart = cursorSelectionStart + tag1.length;
       const newSelectionEnd = cursorSelectionEnd + tag1.length;
@@ -84,9 +70,9 @@ export const MarkdownEditor = (p: { onChange: (text: string) => void }) => {
   };
 
   const addTagAtStartOfLine = (p: { tag: string }) => {
-    const linesArray = text.split("\n");
+    const linesArray = internalValue.split("\n");
 
-    const textBeforeCursor = text.substring(0, cursorSelectionStart);
+    const textBeforeCursor = internalValue.substring(0, cursorSelectionStart);
     const newlinesBeforeCursor = (textBeforeCursor.match(/\n/g) || []).length;
     const currentLineIndex = newlinesBeforeCursor;
 
@@ -100,7 +86,7 @@ export const MarkdownEditor = (p: { onChange: (text: string) => void }) => {
 
     const editedText = [...linesBeforeCurrentLine, editedCurrentLine, ...linesAfterCurrentLine];
 
-    setText(editedText.join("\n"));
+    setInternalValue(editedText.join("\n"));
 
     const cursorPositionOnCurrentLine =
       cursorSelectionStart - textBeforeCursor.lastIndexOf("\n") - 1;
@@ -152,16 +138,13 @@ export const MarkdownEditor = (p: { onChange: (text: string) => void }) => {
         <Button onClick={() => wrapTags({ tagOpen: "![", tagClose: "]()" })}>
           <CustomIcon iconName="Image" size="md" />
         </Button>
-        {/* <Button onClick={() => wrapTags({ tagOpen: "[", tagClose: "]()" })}>
-          <CustomIcon iconName="List" size="md" />
-        </Button> */}
         {/* Install remark-gfm for additional control */}
       </div>
       <Textarea
         ref={textareaElmRef}
-        value={text}
+        value={internalValue}
         onInput={(e) => {
-          setText(e.currentTarget.value);
+          setInternalValue(e.currentTarget.value);
           handleCursorMove(e);
         }}
         onKeyUp={(e) => handleCursorMove(e)}

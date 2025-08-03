@@ -22,7 +22,7 @@ export const BlogAdminScreen = () => {
           />
         </div>
 
-        <MarkdownEditor onChange={(x) => setContentInput(x)} />
+        <MarkdownEditor value={contentInput} onChange={(x) => setContentInput(x)} />
 
         <div>Preview</div>
         <div>
