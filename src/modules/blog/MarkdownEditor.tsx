@@ -8,7 +8,8 @@ const initText = `heading
     
 hiya mate \`hrllo one\`
     
-[here is a link to google.com](google.com)
+[here is an external link to google.com](google.com) 
+[here is an internal link to home](/) 
 ![here is a photo](http://localhost:3000/test.png)
     
 two three world`;

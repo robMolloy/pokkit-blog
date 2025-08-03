@@ -6,7 +6,6 @@ import { MarkdownEditor } from "./MarkdownEditor";
 
 export const BlogAdminScreen = () => {
   const [titleInput, setTitleInput] = useState("");
-  console.log(`BlogAdminScreen.tsx:${/*LL*/ 9}`, {});
 
   return (
     <MainLayout>
