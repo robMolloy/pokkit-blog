@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import {
+  Link,
   ChevronDown,
   ChevronRight,
   Folder,
@@ -36,14 +37,21 @@ import {
   List,
   Brain,
   Loader,
+  Bold,
+  Strikethrough,
+  Italic,
+  Heading1,
+  Heading2,
+  Heading3,
 } from "lucide-react";
 
 const iconMap = {
+  Link,
+  ChevronDown,
+  ChevronRight,
+  Folder,
   Plus,
   Star,
-  Folder,
-  ChevronRight,
-  ChevronDown,
   Calendar,
   Download,
   FileText,
@@ -75,6 +83,12 @@ const iconMap = {
   List,
   Brain,
   Loader,
+  Bold,
+  Strikethrough,
+  Italic,
+  Heading1,
+  Heading2,
+  Heading3,
 };
 
 export const iconSizeClass = {
