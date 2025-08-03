@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import {
+  Eye,
   Link,
   ChevronDown,
   ChevronRight,
@@ -46,6 +47,7 @@ import {
 } from "lucide-react";
 
 const iconMap = {
+  Eye,
   Link,
   ChevronDown,
   ChevronRight,
