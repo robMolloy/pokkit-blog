@@ -17,6 +17,7 @@ import "@/styles/markdown.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { useEffect } from "react";
+import { Toaster } from "sonner";
 
 const useAuth = (p: {
   onIsLoading: () => void;
@@ -95,6 +96,7 @@ export default function App({ Component, pageProps }: AppProps) {
           ["approved", "admin"].includes(currentUserStore.data.user.role)
         }
       >
+        <Toaster />
         {(() => {
           if (currentUserStore.data.status === "loading") return <LoadingScreen />;
 

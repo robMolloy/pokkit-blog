@@ -1,3 +1,4 @@
+import { Modal } from "../Modal";
 import { Header } from "./Header";
 import { LeftSidebar } from "./LeftSidebar";
 
@@ -26,6 +27,7 @@ export function Layout(p: { children: React.ReactNode; showLeftSidebar: boolean 
         )}
         <div className="min-h-0 flex-1 overflow-y-auto">{p.children}</div>
       </div>
+      <Modal />
     </div>
   );
 }
