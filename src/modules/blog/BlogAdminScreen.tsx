@@ -6,7 +6,8 @@ import { MarkdownEditor } from "./MarkdownEditor";
 
 export const BlogAdminScreen = () => {
   const [titleInput, setTitleInput] = useState("");
-  // const [markdownInput, setMarkdownInput] = useState("");
+  console.log(`BlogAdminScreen.tsx:${/*LL*/ 9}`, {});
+
   return (
     <MainLayout>
       <div className="flex flex-col gap-4">
@@ -20,13 +21,7 @@ export const BlogAdminScreen = () => {
           />
         </div>
 
-        <div>
-          <MarkdownEditor />
-          {/* <TipTap /> */}
-          {/* <EditorContent editor={editor} /> */}
-          {/* <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
-          <BubbleMenu editor={editor}>This is the bubble menu</BubbleMenu> */}
-        </div>
+        <MarkdownEditor />
       </div>
     </MainLayout>
   );

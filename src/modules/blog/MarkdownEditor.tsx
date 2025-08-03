@@ -77,27 +77,32 @@ export const MarkdownEditor = () => {
   };
 
   const addTagAtStartOfLine = (p: { tag: string }) => {
-    const textBefore = text.substring(0, cursorSelectionStart);
-    const textAfter = text.substring(cursorSelectionStart);
+    const linesArray = text.split("\n");
 
-    const splitTextBefore = textBefore.split("\n");
+    const textBeforeCursor = text.substring(0, cursorSelectionStart);
+    const newlinesBeforeCursor = (textBeforeCursor.match(/\n/g) || []).length;
+    const currentLineIndex = newlinesBeforeCursor;
 
-    const editedTextBefore = splitTextBefore
-      .map((textLine, j) => {
-        const currentCursorLine = splitTextBefore.length === j + 1;
-        if (!currentCursorLine) return textLine;
-        console.log(`MarkdownEditor.tsx:${/*LL*/ 89}`, { textLine });
+    const textBeforeLine =
+      linesArray.slice(0, currentLineIndex).join("\n") + (currentLineIndex > 0 ? "\n" : "");
+    const currentLine = linesArray[currentLineIndex] || "";
+    const textAfterLine =
+      linesArray.slice(currentLineIndex + 1).length > 0
+        ? "\n" + linesArray.slice(currentLineIndex + 1).join("\n")
+        : "";
 
-        return textLine.startsWith(p.tag) ? textLine.slice(p.tag.length) : `${p.tag}${textLine}`;
-      })
-      .join("\n");
+    const editedLine = currentLine.startsWith(p.tag)
+      ? currentLine.slice(p.tag.length)
+      : `${p.tag}${currentLine}`;
 
-    setText(`${editedTextBefore}${textAfter}`);
+    setText(`${textBeforeLine}${editedLine}${textAfterLine}`);
 
-    const isTagRemoved = editedTextBefore.length < textBefore.length;
+    const isTagRemoved = editedLine.length < currentLine.length;
 
-    const newSelectionStart = cursorSelectionStart + p.tag.length * (isTagRemoved ? -1 : 1);
-    const newSelectionEnd = cursorSelectionEnd + p.tag.length * (isTagRemoved ? -1 : 1);
+    const tagLengthChange = p.tag.length * (isTagRemoved ? -1 : 1);
+    const newSelectionStart = cursorSelectionStart + tagLengthChange;
+    const newSelectionEnd = cursorSelectionEnd + tagLengthChange;
+
     setCursorSelectionStart(newSelectionStart);
     setCursorSelectionEnd(newSelectionEnd);
 
@@ -106,19 +111,7 @@ export const MarkdownEditor = () => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex gap-1">
-        <Button onClick={() => wrapTags({ tagOpen: "**", tagClose: "**" })}>
-          <CustomIcon iconName="Bold" size="md" />
-        </Button>
-        <Button onClick={() => wrapTags({ tagOpen: "_", tagClose: "_" })}>
-          <CustomIcon iconName="Italic" size="md" />
-        </Button>
-        <Button onClick={() => wrapTags({ tagOpen: "[", tagClose: "]()" })}>
-          <CustomIcon iconName="Link" size="md" />
-        </Button>
-        <Button onClick={() => wrapTags({ tagOpen: "![", tagClose: "]()" })}>
-          <CustomIcon iconName="Image" size="md" />
-        </Button>
+      <div className="flex items-center gap-1">
         <Button onClick={() => addTagAtStartOfLine({ tag: "# " })}>
           <CustomIcon iconName="Heading1" size="md" />
         </Button>
@@ -127,6 +120,20 @@ export const MarkdownEditor = () => {
         </Button>
         <Button onClick={() => addTagAtStartOfLine({ tag: "### " })}>
           <CustomIcon iconName="Heading3" size="md" />
+        </Button>
+        <span className="mx-1 h-8 border-l" />
+        <Button onClick={() => wrapTags({ tagOpen: "**", tagClose: "**" })}>
+          <CustomIcon iconName="Bold" size="md" />
+        </Button>
+        <Button onClick={() => wrapTags({ tagOpen: "_", tagClose: "_" })}>
+          <CustomIcon iconName="Italic" size="md" />
+        </Button>
+        <span className="mx-1 h-8 border-l" />
+        <Button onClick={() => wrapTags({ tagOpen: "[", tagClose: "]()" })}>
+          <CustomIcon iconName="Link" size="md" />
+        </Button>
+        <Button onClick={() => wrapTags({ tagOpen: "![", tagClose: "]()" })}>
+          <CustomIcon iconName="Image" size="md" />
         </Button>
         {/* <Button onClick={() => wrapTags({ tagOpen: "[", tagClose: "]()" })}>
           <CustomIcon iconName="List" size="md" />
