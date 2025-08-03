@@ -1,6 +1,8 @@
 import { Layout } from "@/components/layout/Layout";
 import { pb } from "@/config/pocketbaseConfig";
 import { AuthForm } from "@/modules/auth/AuthForm";
+import { useBlogPostRecordsStore } from "@/modules/blog/blogPostRecordsStore";
+import { smartSubscribeToBlogPostRecords } from "@/modules/blog/dbBlogPostRecordUtils";
 import { smartSubscribeToUsers, subscribeToUser } from "@/modules/users/dbUsersUtils";
 import { useUsersStore } from "@/modules/users/usersStore";
 import { LoadingScreen } from "@/screens/LoadingScreen";
@@ -65,6 +67,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const themeStore = useThemeStore();
   const usersStore = useUsersStore();
   const currentUserStore = useCurrentUserStore();
+  const blogPostRecordsStore = useBlogPostRecordsStore();
 
   themeStore.useThemeStoreSideEffect();
 
@@ -72,6 +75,11 @@ export default function App({ Component, pageProps }: AppProps) {
     onIsLoading: () => {},
     onIsLoggedIn: () => {
       smartSubscribeToUsers({ pb, onChange: (x) => usersStore.setData(x) });
+      smartSubscribeToBlogPostRecords({
+        pb,
+        onChange: (x) => blogPostRecordsStore.setData(x),
+        onError: () => {},
+      });
     },
     onIsLoggedOut: () => {},
   });
