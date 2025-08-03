@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 export const DisplayMarkdown = (p: { children: string }) => {
   return (
     <div className="flex justify-center">
-      <div className="react-markdown max-w-[700px]">
+      <div className="react-markdown w-[700px]">
         <Markdown
           components={{
             a: ({ children, href }) => {
