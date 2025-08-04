@@ -11,12 +11,13 @@
     "kill-port": "kill -9 $(lsof -i:${PORT:?} -t | head -n 1)",
     "kill:db": "PORT=8090 npm run kill-port",
     "db:start": "./pocketbase-leader/pocketbase serve",
-    "db:start:dev": "pocketbase-leader/start-pocketbase.js",
     "db:restore-backup": "pocketbase-leader/restore-backup.mjs",
+    "db:create-backup": "pocketbase-leader/create-backup.mjs",
     "dev1": "npm run dev",
     "dev2": "npm run tsc",
     "dev3": "npm run db:start",
-    "dev4": "npm run db:restore-backup"
+    "dev4": "npm run db:restore-backup",
+    "dev5": "npm run db:create-backup"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.40.1",
