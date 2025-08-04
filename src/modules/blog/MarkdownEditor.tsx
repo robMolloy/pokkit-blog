@@ -3,7 +3,12 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
-export const MarkdownEditor = (p: { value: string; onChange: (text: string) => void }) => {
+export const MarkdownEditor = (p: {
+  id: string;
+  placeholder: string;
+  value: string;
+  onChange: (text: string) => void;
+}) => {
   const [internalValue, setInternalValue] = useState(p.value ?? "");
   const [cursorSelectionStart, setCursorSelectionStart] = useState(0);
   const [cursorSelectionEnd, setCursorSelectionEnd] = useState(0);
@@ -134,6 +139,8 @@ export const MarkdownEditor = (p: { value: string; onChange: (text: string) => v
         {/* Install remark-gfm for additional control */}
       </div>
       <Textarea
+        id={p.id}
+        placeholder={p.placeholder}
         ref={textareaElmRef}
         value={internalValue}
         onInput={(e) => {
