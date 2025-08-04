@@ -1,14 +1,15 @@
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { useState } from "react";
-import { DisplayMarkdown } from "../DisplayMarkdown";
-import { MarkdownEditor } from "../MarkdownEditor";
 import { MainLayout } from "@/components/layout/Layout";
 import { Button } from "@/components/ui/button";
-import { createBlogPostRecord } from "../dbBlogPostRecordUtils";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { pb } from "@/config/pocketbaseConfig";
-import { toast } from "sonner";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { toast } from "sonner";
+import { DisplayBlogPost } from "../DisplayBlogPost";
+import { MarkdownEditor } from "../MarkdownEditor";
+import { useBlogPostImageRecordsStore } from "../blogPostImageRecordsStore";
+import { createBlogPostRecord } from "../dbBlogPostRecordUtils";
 
 export const CreateBlogPostScreen = () => {
   const [title, setTitle] = useState("");
@@ -17,6 +18,8 @@ export const CreateBlogPostScreen = () => {
   const [blogPostImageId, setBlogPostImageId] = useState("");
   const [blogPostImageCaption, setBlogPostImageCaption] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+
+  const blogPostImageRecordsStore = useBlogPostImageRecordsStore();
 
   const router = useRouter();
   return (
@@ -107,9 +110,12 @@ export const CreateBlogPostScreen = () => {
         </div>
 
         <div>Preview</div>
-        <div>
-          <DisplayMarkdown>{content}</DisplayMarkdown>
-        </div>
+
+        <DisplayBlogPost
+          pb={pb}
+          blogPost={{ title, subtitle, content, blogPostImageId, blogPostImageCaption }}
+          blogPostImage={blogPostImageRecordsStore.data?.find((x) => x.id === blogPostImageId)}
+        />
       </div>
     </MainLayout>
   );
