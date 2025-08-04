@@ -10,9 +10,9 @@ export const DisplayBlogPost = (p: {
 }) => {
   return (
     <DisplayMarkdown>{`# ${p.blogPost?.title}
-## ${p.blogPost?.subtitle}
 ${p.blogPostImage ? `![${p.blogPost?.blogPostImageCaption}](${p.pb.files.getURL(p.blogPostImage, p.blogPostImage.imageUrl)})` : ""}
 ${p.blogPost?.content}
+## ${p.blogPost?.subtitle}
 `}</DisplayMarkdown>
   );
 };
