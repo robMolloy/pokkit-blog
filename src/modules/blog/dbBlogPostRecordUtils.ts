@@ -14,15 +14,28 @@ const blogPostRecordSchema = z.object({
   updated: z.string(),
 });
 export type TBlogPostRecord = z.infer<typeof blogPostRecordSchema>;
+export type TBlogPostRecordFormData = Omit<
+  TBlogPostRecord,
+  "collectionId" | "collectionName" | "id" | "created" | "updated"
+>;
 
 const collectionName = "blogPosts";
 
 export const createBlogPostRecord = async (p: {
   pb: PocketBase;
-  data: Omit<TBlogPostRecord, "collectionId" | "collectionName" | "id" | "created" | "updated">;
+  data: TBlogPostRecordFormData;
 }) => {
   try {
     const resp = await p.pb.collection(collectionName).create(p.data);
+    return blogPostRecordSchema.safeParse(resp);
+  } catch (error) {
+    console.error(error);
+    return { success: false, error } as const;
+  }
+};
+export const updateBlogPostRecord = async (p: { pb: PocketBase; data: TBlogPostRecord }) => {
+  try {
+    const resp = await p.pb.collection(collectionName).update(p.data.id, p.data);
     return blogPostRecordSchema.safeParse(resp);
   } catch (error) {
     console.error(error);
