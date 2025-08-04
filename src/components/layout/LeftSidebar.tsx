@@ -113,9 +113,9 @@ export function LeftSidebar() {
             {currentUserStore.data.status === "loggedIn" &&
               currentUserStore.data.user.role === "admin" && (
                 <SidebarButton
-                  href="/admin/create-blog"
+                  href="/admin/create-blog-post"
                   iconName="Pencil"
-                  isHighlighted={router.pathname === "/admin/create-blog"}
+                  isHighlighted={router.pathname === "/admin/create-blog-post"}
                 >
                   Create Blog Post
                 </SidebarButton>
