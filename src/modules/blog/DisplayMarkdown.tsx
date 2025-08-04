@@ -4,7 +4,7 @@ import Markdown from "react-markdown";
 export const DisplayMarkdown = (p: { children: string }) => {
   return (
     <div className="flex justify-center">
-      <div className="react-markdown w-[700px]">
+      <div className="react-markdown max-w-[700px]">
         <Markdown
           components={{
             a: ({ children, href }) => {
@@ -21,7 +21,7 @@ export const DisplayMarkdown = (p: { children: string }) => {
             img: ({ src, alt }) => (
               <>
                 <img src={src} alt={alt} />
-                {alt && <div className="mt-2 border-l pl-2 text-sm italic opacity-75">{alt}</div>}
+                {alt && <div className="my-2 border-l pl-2 text-sm italic opacity-75">{alt}</div>}
               </>
             ),
           }}
