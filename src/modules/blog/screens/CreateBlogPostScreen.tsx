@@ -18,6 +18,7 @@ export const CreateBlogPostScreen = () => {
       <div className="flex gap-6">
         <div className="flex-1">
           <CreateUpdateBlogPostForm
+            blogPostImageRecords={blogPostImageRecordsStore.data ?? []}
             blogPostRecord={undefined}
             onChange={(x) => setBlogPostFormData(x)}
           />

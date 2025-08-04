@@ -12,9 +12,12 @@ import {
   TBlogPostRecordFormData,
   updateBlogPostRecord,
 } from "./dbBlogPostRecordUtils";
+import { TBlogPostImageRecord } from "./dbBlogPostImageRecordUtils";
+import { SelectBlogPostImage } from "./SelectBlogPostImage";
 
 export const CreateUpdateBlogPostForm = (p: {
   blogPostRecord?: TBlogPostRecord;
+  blogPostImageRecords: TBlogPostImageRecord[];
   onChange: (x: TBlogPostRecordFormData) => void;
 }) => {
   const [title, setTitle] = useState(p.blogPostRecord?.title ?? "");
@@ -55,11 +58,13 @@ export const CreateUpdateBlogPostForm = (p: {
 
       <div>
         <Label htmlFor="blogPostImageId">Image</Label>
-        <Input
-          id="blogPostImageId"
-          value={blogPostImageId}
-          onInput={(e) => setBlogPostImageId((e.target as unknown as { value: string }).value)}
-          placeholder="Enter your blog post image id..."
+        <SelectBlogPostImage
+          pb={pb}
+          blogPostImageRecords={p.blogPostImageRecords}
+          onChange={(x) => {
+            console.log(`createUpdateBlogPostForm.tsx:${/*LL*/ 71}`, { x });
+            setBlogPostImageId(x.id);
+          }}
         />
       </div>
 
