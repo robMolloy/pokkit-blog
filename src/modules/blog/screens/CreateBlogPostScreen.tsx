@@ -14,8 +14,8 @@ export const CreateBlogPostScreen = () => {
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [content, setContent] = useState("");
-  const [imageId, setImageId] = useState("");
-  const [imageCaption, setImageCaption] = useState("");
+  const [blogPostImageId, setBlogPostImageId] = useState("");
+  const [blogPostImageCaption, setBlogPostImageCaption] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
@@ -23,7 +23,7 @@ export const CreateBlogPostScreen = () => {
     <MainLayout>
       <div className="flex flex-col gap-4">
         <div>
-          <Label htmlFor="blogTitle">Post Title</Label>
+          <Label htmlFor="blogTitle">Title</Label>
           <Input
             id="blogTitle"
             value={title}
@@ -31,8 +31,47 @@ export const CreateBlogPostScreen = () => {
             placeholder="Enter your blog post title..."
           />
         </div>
+        <div>
+          <Label htmlFor="blogSubtitle">Subtitle</Label>
+          <Input
+            id="blogTitle"
+            value={subtitle}
+            onInput={(e) => setSubtitle((e.target as unknown as { value: string }).value)}
+            placeholder="Enter your blog post subtitle..."
+          />
+        </div>
 
-        <MarkdownEditor value={content} onChange={(x) => setContent(x)} />
+        <div>
+          <Label htmlFor="blogPostImageId">Image</Label>
+          <Input
+            id="blogPostImageId"
+            value={blogPostImageId}
+            onInput={(e) => setBlogPostImageId((e.target as unknown as { value: string }).value)}
+            placeholder="Enter your blog post image id..."
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="blogPostImageCaption">Image Caption</Label>
+          <Input
+            id="blogPostImageCaption"
+            value={blogPostImageCaption}
+            onInput={(e) =>
+              setBlogPostImageCaption((e.target as unknown as { value: string }).value)
+            }
+            placeholder="Enter your blog post image caption..."
+          />
+        </div>
+
+        <div>
+          <Label htmlFor="blogContentInput">Content</Label>
+          <MarkdownEditor
+            id="blogContentInput"
+            placeholder="Enter your blog post content..."
+            value={content}
+            onChange={(x) => setContent(x)}
+          />
+        </div>
 
         <div className="flex justify-end gap-4">
           <Button
@@ -46,8 +85,8 @@ export const CreateBlogPostScreen = () => {
                   title: title,
                   subtitle,
                   content: content,
-                  blogPostImageId: imageId,
-                  blogPostImageCaption: imageCaption,
+                  blogPostImageId: blogPostImageId,
+                  blogPostImageCaption: blogPostImageCaption,
                 },
               });
 
