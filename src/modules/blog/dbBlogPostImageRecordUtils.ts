@@ -11,7 +11,7 @@ const blogPostImageRecordSchema = z.object({
 });
 export type TBlogPostImageRecord = z.infer<typeof blogPostImageRecordSchema>;
 
-const collectionName = "blogPostImageImages";
+const collectionName = "blogPostImages";
 
 export const createBlogPostImageRecord = async (p: {
   pb: PocketBase;
