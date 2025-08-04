@@ -6,7 +6,10 @@ const blogPostRecordSchema = z.object({
   collectionName: z.string(),
   id: z.string(),
   title: z.string(),
+  subtitle: z.string(),
   content: z.string(),
+  blogPostImageId: z.string(),
+  blogPostImageCaption: z.string(),
   created: z.string(),
   updated: z.string(),
 });
