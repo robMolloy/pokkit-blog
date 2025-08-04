@@ -1,4 +1,4 @@
-import { CreateBlogPostScreen } from "@/modules/blog/CreateBlogPostScreen";
+import { CreateBlogPostScreen } from "@/modules/blog/screens/CreateBlogPostScreen";
 
 export default function Page() {
   return <CreateBlogPostScreen />;
