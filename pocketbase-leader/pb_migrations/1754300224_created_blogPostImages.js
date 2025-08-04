@@ -2,8 +2,8 @@
 migrate(
   (app) => {
     const collection = new Collection({
-      createRule: null,
-      deleteRule: null,
+      createRule: '@request.auth.role="admin"',
+      deleteRule: '@request.auth.role="admin"',
       fields: [
         {
           autogeneratePattern: "[a-z0-9]{15}",
@@ -56,12 +56,12 @@ migrate(
       ],
       id: "pbc_2059723834",
       indexes: [],
-      listRule: null,
+      listRule: '@request.auth.role="admin" || @request.auth.role="approved"',
       name: "blogPostImages",
       system: false,
       type: "base",
-      updateRule: null,
-      viewRule: null,
+      updateRule: '@request.auth.role="admin"',
+      viewRule: '@request.auth.role="admin" || @request.auth.role="approved"',
     });
 
     return app.save(collection);
