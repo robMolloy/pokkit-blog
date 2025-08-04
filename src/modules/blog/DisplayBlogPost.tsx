@@ -11,8 +11,8 @@ export const DisplayBlogPost = (p: {
   return (
     <DisplayMarkdown>{`# ${p.blogPost?.title}
 ${p.blogPostImage ? `![${p.blogPost?.blogPostImageCaption}](${p.pb.files.getURL(p.blogPostImage, p.blogPostImage.imageUrl)})` : ""}
-${p.blogPost?.content}
 ## ${p.blogPost?.subtitle}
+${p.blogPost?.content}
 `}</DisplayMarkdown>
   );
 };
