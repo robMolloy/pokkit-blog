@@ -60,6 +60,7 @@ export const BlogPostImageSelect = (p: {
     if (e.key === "Enter") {
       const selectedBlogPostImageRecord = suggestedBlogPostImageRecords[selectedIndex];
       if (!selectedBlogPostImageRecord) setSelectedValue(selectedBlogPostImageRecord);
+      setOpen(false);
     }
   };
 
@@ -87,6 +88,7 @@ export const BlogPostImageSelect = (p: {
                 className="absolute right-2 top-1/2 h-5 w-5 -translate-y-1/2 rounded-full"
                 onClick={() => {
                   setSelectedValue(undefined);
+                  setSearchTerm("");
                   inputRef.current?.focus();
                 }}
               >
