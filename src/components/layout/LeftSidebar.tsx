@@ -120,6 +120,16 @@ export function LeftSidebar() {
             {currentUserStore.data.status === "loggedIn" &&
               currentUserStore.data.user.role === "admin" && (
                 <SidebarButton
+                  href="/admin/create-blog-post-image"
+                  iconName="Pencil"
+                  isHighlighted={router.pathname === "/admin/create-blog-post-image"}
+                >
+                  Create Blog Post Image
+                </SidebarButton>
+              )}
+            {currentUserStore.data.status === "loggedIn" &&
+              currentUserStore.data.user.role === "admin" && (
+                <SidebarButton
                   href="/admin/create-blog-post"
                   iconName="Pencil"
                   isHighlighted={router.pathname === "/admin/create-blog-post"}
