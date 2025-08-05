@@ -10,15 +10,16 @@ const blogPostImageRecordSchema = z.object({
   updated: z.string(),
 });
 export type TBlogPostImageRecord = z.infer<typeof blogPostImageRecordSchema>;
+export type TBlogPostImageRecordFormData = Omit<
+  TBlogPostImageRecord,
+  "collectionId" | "collectionName" | "id" | "imageUrl" | "created" | "updated"
+> & { imageUrl: File };
 
 const collectionName = "blogPostImages";
 
 export const createBlogPostImageRecord = async (p: {
   pb: PocketBase;
-  data: Omit<
-    TBlogPostImageRecord,
-    "collectionId" | "collectionName" | "id" | "created" | "updated"
-  >;
+  data: TBlogPostImageRecordFormData;
 }) => {
   try {
     const resp = await p.pb.collection(collectionName).create(p.data);
