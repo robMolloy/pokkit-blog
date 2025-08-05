@@ -13,7 +13,7 @@ import {
   updateBlogPostRecord,
 } from "./dbBlogPostRecordUtils";
 import { TBlogPostImageRecord } from "./dbBlogPostImageRecordUtils";
-import { SelectBlogPostImage } from "./SelectBlogPostImage";
+import { BlogPostImageSelect } from "./BlogPostImageSelect";
 
 export const CreateUpdateBlogPostForm = (p: {
   blogPostRecord?: TBlogPostRecord;
@@ -58,7 +58,7 @@ export const CreateUpdateBlogPostForm = (p: {
 
       <div>
         <Label htmlFor="blogPostImageId">Image</Label>
-        <SelectBlogPostImage
+        <BlogPostImageSelect
           pb={pb}
           blogPostImageRecords={p.blogPostImageRecords}
           value={blogPostImageId}

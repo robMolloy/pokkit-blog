@@ -6,7 +6,7 @@ import { X } from "lucide-react";
 import { TBlogPostImageRecord } from "./dbBlogPostImageRecordUtils";
 import { PocketBase } from "@/config/pocketbaseConfig";
 
-export const SelectBlogPostImage = (p: {
+export const BlogPostImageSelect = (p: {
   pb: PocketBase;
   blogPostImageRecords: TBlogPostImageRecord[];
   value: string;
