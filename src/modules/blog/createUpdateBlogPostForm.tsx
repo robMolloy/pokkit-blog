@@ -14,12 +14,14 @@ import {
 } from "./dbBlogPostRecordUtils";
 import { TBlogPostImageRecord } from "./dbBlogPostImageRecordUtils";
 import { BlogPostImageSelect } from "./BlogPostImageSelect";
+import { Switch } from "@/components/ui/switch";
 
 export const CreateUpdateBlogPostForm = (p: {
   blogPostRecord?: TBlogPostRecord;
   blogPostImageRecords: TBlogPostImageRecord[];
   onChange: (x: TBlogPostRecordFormData) => void;
 }) => {
+  const [publishedAt, setPublishedAt] = useState(p.blogPostRecord?.publishedAt ?? "");
   const [title, setTitle] = useState(p.blogPostRecord?.title ?? "");
   const [subtitle, setSubtitle] = useState(p.blogPostRecord?.subtitle ?? "");
   const [content, setContent] = useState(p.blogPostRecord?.content ?? "");
@@ -32,11 +34,21 @@ export const CreateUpdateBlogPostForm = (p: {
   const router = useRouter();
 
   useEffect(() => {
-    p.onChange({ title, subtitle, content, blogPostImageId, blogPostImageCaption });
-  }, [title, subtitle, content, blogPostImageId, blogPostImageCaption]);
+    p.onChange({ publishedAt, title, subtitle, content, blogPostImageId, blogPostImageCaption });
+  }, [publishedAt, title, subtitle, content, blogPostImageId, blogPostImageCaption]);
+
+  const newData = { publishedAt, title, subtitle, content, blogPostImageId, blogPostImageCaption };
 
   return (
     <div className="flex flex-col gap-4">
+      <div className="flex items-center gap-4">
+        <Label htmlFor="blogPublishedAt">Is Published?</Label>
+        <Switch
+          id="blogPublishedAt"
+          checked={publishedAt !== ""}
+          onCheckedChange={(x) => setPublishedAt(x ? new Date().toISOString() : "")}
+        />
+      </div>
       <div>
         <Label htmlFor="blogTitle">Title</Label>
         <Input
@@ -92,7 +104,6 @@ export const CreateUpdateBlogPostForm = (p: {
             if (isLoading) return;
             setIsLoading(true);
 
-            const newData = { title, subtitle, content, blogPostImageId, blogPostImageCaption };
             const resp = await (p.blogPostRecord?.id
               ? updateBlogPostRecord({ pb, data: { ...p.blogPostRecord, ...newData } })
               : createBlogPostRecord({ pb, data: newData }));
@@ -111,6 +122,7 @@ export const CreateUpdateBlogPostForm = (p: {
               },
             });
 
+            setPublishedAt("");
             setTitle("");
             setSubtitle("");
             setContent("");

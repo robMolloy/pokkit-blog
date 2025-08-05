@@ -17,7 +17,7 @@ const blogPostRecordSchema = z.object({
 export type TBlogPostRecord = z.infer<typeof blogPostRecordSchema>;
 export type TBlogPostRecordFormData = Omit<
   TBlogPostRecord,
-  "collectionId" | "collectionName" | "id" | "publishedAt" | "created" | "updated"
+  "collectionId" | "collectionName" | "id" | "created" | "updated"
 >;
 
 const collectionName = "blogPosts";
