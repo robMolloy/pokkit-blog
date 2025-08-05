@@ -9,9 +9,7 @@ import { TBlogPostRecordFormData } from "../dbBlogPostRecordUtils";
 export const CreateBlogPostScreen = () => {
   const blogPostImageRecordsStore = useBlogPostImageRecordsStore();
 
-  const [blogPostFormData, setBlogPostFormData] = useState<TBlogPostRecordFormData | undefined>(
-    undefined,
-  );
+  const [blogPostFormData, setBlogPostFormData] = useState<TBlogPostRecordFormData | undefined>();
 
   return (
     <MainLayout>
