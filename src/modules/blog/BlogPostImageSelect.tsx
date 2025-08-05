@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 
+import { CustomIcon } from "@/components/CustomIcon";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { X } from "lucide-react";
-import { TBlogPostImageRecord } from "./dbBlogPostImageRecordUtils";
 import { PocketBase } from "@/config/pocketbaseConfig";
+import { TBlogPostImageRecord } from "./dbBlogPostImageRecordUtils";
 
 export const BlogPostImageSelect = (p: {
   pb: PocketBase;
@@ -75,18 +76,22 @@ export const BlogPostImageSelect = (p: {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onFocus={() => setOpen(true)}
+              onBlur={() => setOpen(false)}
               onKeyDown={handleKeyDown}
             />
+
             {searchTerm.length > 0 && (
-              <button
-                className="absolute right-2 top-1/2 -translate-y-1/2 rounded-sm p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
+              <Button
+                variant="secondary"
+                size="icon"
+                className="absolute right-2 top-1/2 h-5 w-5 -translate-y-1/2 rounded-full"
                 onClick={() => {
                   setSelectedValue(undefined);
                   inputRef.current?.focus();
                 }}
               >
-                <X className="h-4 w-4" />
-              </button>
+                <CustomIcon iconName="X" size="xs" />
+              </Button>
             )}
           </div>
         </PopoverTrigger>
@@ -130,6 +135,29 @@ export const BlogPostImageSelect = (p: {
           </div>
         </PopoverContent>
       </Popover>
+      <div className="mt-4 flex justify-center">
+        {selectedValue ? (
+          <div className="relative">
+            <Button
+              variant="secondary"
+              size="icon"
+              className="absolute right-0 top-0 h-5 w-5 -translate-y-1/2 translate-x-1/2 rounded-full"
+              onClick={() => {
+                setSelectedValue(undefined);
+                inputRef.current?.focus();
+              }}
+            >
+              <CustomIcon iconName="X" size="xs" />
+            </Button>
+            <img
+              className="h-24"
+              src={p.pb.files.getURL(selectedValue, selectedValue.imageUrl, { thumb: "0x100" })}
+            />
+          </div>
+        ) : (
+          <CustomIcon iconName="Image" size="4xl" />
+        )}
+      </div>
     </div>
   );
 };
