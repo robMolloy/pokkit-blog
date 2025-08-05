@@ -21,7 +21,7 @@ export const AllBlogPostsScreen = () => {
 
   return (
     <MainLayout>
-      <div className="grid grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {(() => {
           if (blogPostRecordsWithImage === undefined) return <div>Loading...</div>;
           if (blogPostRecordsWithImage === null) return <div>Error</div>;

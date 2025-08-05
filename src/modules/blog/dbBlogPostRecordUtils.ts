@@ -44,9 +44,7 @@ export const updateBlogPostRecord = async (p: { pb: PocketBase; data: TBlogPostR
 };
 export const listBlogPostRecords = async (p: { pb: PocketBase }) => {
   try {
-    const initData = await p.pb.collection(collectionName).getFullList({
-      sort: "-created",
-    });
+    const initData = await p.pb.collection(collectionName).getFullList({ sort: "-created" });
 
     const data = initData
       .map((x) => blogPostRecordSchema.safeParse(x))
