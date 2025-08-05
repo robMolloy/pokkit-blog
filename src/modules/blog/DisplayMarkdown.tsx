@@ -20,7 +20,7 @@ export const DisplayMarkdown = (p: { children: string }) => {
           img: ({ src, alt }) => (
             <>
               <img src={src} alt={alt} />
-              {alt && <div className="my-2 border-l pl-2 text-sm italic opacity-75">{alt}</div>}
+              {alt && <span className="my-2 border-l pl-2 text-sm italic opacity-75">{alt}</span>}
             </>
           ),
         }}
