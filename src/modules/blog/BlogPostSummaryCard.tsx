@@ -1,7 +1,6 @@
 import { CustomIcon } from "@/components/CustomIcon";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { pb } from "@/config/pocketbaseConfig";
-import { useRouter } from "next/router";
 import { TBlogPostImageRecord } from "./dbBlogPostImageRecordUtils";
 import { TBlogPostRecord } from "./dbBlogPostRecordUtils";
 import { markdownLinksToPlainText } from "./markdownUtils";
@@ -9,13 +8,12 @@ import { markdownLinksToPlainText } from "./markdownUtils";
 export const BlogPostSummaryCard = (p: {
   blogPostRecord: TBlogPostRecord;
   blogPostImageRecord?: TBlogPostImageRecord;
+  onClick: () => void;
 }) => {
-  const router = useRouter();
-
   return (
     <Card
       className="flex cursor-pointer flex-col gap-4 overflow-hidden border-0 shadow-md transition-shadow duration-300 hover:bg-secondary hover:shadow-lg"
-      onClick={() => router.push(`/admin/blog-post/${p.blogPostRecord.id}`)}
+      onClick={() => p.onClick()}
     >
       {p.blogPostImageRecord && (
         <div className="overflow-hidden">

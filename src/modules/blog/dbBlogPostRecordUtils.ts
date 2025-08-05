@@ -10,13 +10,14 @@ const blogPostRecordSchema = z.object({
   content: z.string(),
   blogPostImageId: z.string(),
   blogPostImageCaption: z.string(),
+  publishedAt: z.string(),
   created: z.string(),
   updated: z.string(),
 });
 export type TBlogPostRecord = z.infer<typeof blogPostRecordSchema>;
 export type TBlogPostRecordFormData = Omit<
   TBlogPostRecord,
-  "collectionId" | "collectionName" | "id" | "created" | "updated"
+  "collectionId" | "collectionName" | "id" | "publishedAt" | "created" | "updated"
 >;
 
 const collectionName = "blogPosts";

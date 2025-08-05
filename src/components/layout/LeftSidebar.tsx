@@ -91,6 +91,13 @@ export function LeftSidebar() {
             <SidebarButton href="/" iconName={"Home"} isHighlighted={router.pathname === "/"}>
               Home
             </SidebarButton>
+            <SidebarButton
+              href="/public-blog-posts"
+              iconName="Eye"
+              isHighlighted={router.pathname === "/public-blog-posts"}
+            >
+              Blog Posts
+            </SidebarButton>
           </div>
         </div>
         <div className="relative flex-1">

@@ -3,16 +3,9 @@ import { useBlogPostImageRecordsStore } from "../blogPostImageRecordsStore";
 import { useBlogPostRecordsStore } from "../blogPostRecordsStore";
 import { BlogPostSummaryCard } from "../BlogPostSummaryCard";
 import { useRouter } from "next/router";
+import { BlogPostSummariesGrid } from "../BlogPostSummmariesGrid";
 
-const BlogPostSummmariesGrid = (p: { children: React.ReactNode }) => {
-  return (
-    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-      {p.children}
-    </div>
-  );
-};
-
-export const AllBlogPostsScreen = () => {
+export const PublicBlogPostsScreen = () => {
   const router = useRouter();
 
   const blogPostRecordsStore = useBlogPostRecordsStore();
@@ -22,12 +15,14 @@ export const AllBlogPostsScreen = () => {
     if (blogPostRecordsStore.data === undefined) return undefined;
     if (blogPostRecordsStore.data === null) return null;
 
-    return blogPostRecordsStore.data.map((blogPostRecord) => ({
-      blogPostRecord,
-      blogPostImageRecord: blogPostImageRecordsStore.data?.find(
-        (blogPostImage) => blogPostImage.id === blogPostRecord.blogPostImageId,
-      ),
-    }));
+    return blogPostRecordsStore.data
+      .filter((x) => !!x.publishedAt)
+      .map((blogPostRecord) => ({
+        blogPostRecord,
+        blogPostImageRecord: blogPostImageRecordsStore.data?.find(
+          (blogPostImage) => blogPostImage.id === blogPostRecord.blogPostImageId,
+        ),
+      }));
   })();
 
   return (
@@ -38,7 +33,7 @@ export const AllBlogPostsScreen = () => {
         if (blogPostRecordsWithImage.length === 0) return <div>No posts found</div>;
 
         return (
-          <BlogPostSummmariesGrid>
+          <BlogPostSummariesGrid>
             {blogPostRecordsWithImage.map(({ blogPostRecord, blogPostImageRecord }) => (
               <BlogPostSummaryCard
                 key={blogPostRecord.id}
@@ -47,7 +42,7 @@ export const AllBlogPostsScreen = () => {
                 blogPostImageRecord={blogPostImageRecord}
               />
             ))}
-          </BlogPostSummmariesGrid>
+          </BlogPostSummariesGrid>
         );
       })()}
     </MainLayout>
