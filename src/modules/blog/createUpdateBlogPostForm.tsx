@@ -61,10 +61,8 @@ export const CreateUpdateBlogPostForm = (p: {
         <SelectBlogPostImage
           pb={pb}
           blogPostImageRecords={p.blogPostImageRecords}
-          onChange={(x) => {
-            console.log(`createUpdateBlogPostForm.tsx:${/*LL*/ 71}`, { x });
-            setBlogPostImageId(x.id);
-          }}
+          value={blogPostImageId}
+          onChange={(x) => setBlogPostImageId(x?.id ?? "")}
         />
       </div>
 

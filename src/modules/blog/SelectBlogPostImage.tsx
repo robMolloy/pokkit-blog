@@ -9,11 +9,15 @@ import { PocketBase } from "@/config/pocketbaseConfig";
 export const SelectBlogPostImage = (p: {
   pb: PocketBase;
   blogPostImageRecords: TBlogPostImageRecord[];
-  onChange: (x: TBlogPostImageRecord) => void;
+  value: string;
+  onChange: (x?: TBlogPostImageRecord) => void;
 }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedIndex, setSelectedIndex] = useState(-1);
+  const [selectedValue, setSelectedValue] = useState<TBlogPostImageRecord | undefined>(
+    p.blogPostImageRecords.find((x) => x.id === p.value),
+  );
 
   const [searchTerm, setSearchTerm] = useState("");
   const [open, setOpen] = useState(false);
@@ -32,11 +36,14 @@ export const SelectBlogPostImage = (p: {
     if (selectedElement) selectedElement.scrollIntoView({ block: "nearest" });
   }, [selectedIndex]);
 
-  const handleSelect = (x: TBlogPostImageRecord) => {
-    setSearchTerm(x.id);
-    p.onChange(x);
-    setOpen(false);
-  };
+  useEffect(() => {
+    setSelectedValue(p.blogPostImageRecords.find((x) => x.id === p.value));
+  }, [p.value]);
+
+  useEffect(() => {
+    p.onChange(selectedValue);
+    setSearchTerm(selectedValue?.id ?? "");
+  }, [selectedValue]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!open || suggestedBlogPostImageRecords.length === 0) return;
@@ -50,16 +57,14 @@ export const SelectBlogPostImage = (p: {
       );
     if (e.key === "ArrowUp") setSelectedIndex((prev) => (prev > 0 ? prev - 1 : -1));
     if (e.key === "Enter") {
-      const selectedBlogPostImageRecords = suggestedBlogPostImageRecords[selectedIndex];
-      if (!selectedBlogPostImageRecords) return; // must be last case
-
-      handleSelect(selectedBlogPostImageRecords);
+      const selectedBlogPostImageRecord = suggestedBlogPostImageRecords[selectedIndex];
+      if (!selectedBlogPostImageRecord) setSelectedValue(selectedBlogPostImageRecord);
     }
   };
 
   return (
     <div className="relative">
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open}>
         <PopoverTrigger asChild>
           <div className="relative">
             <Input
@@ -68,18 +73,15 @@ export const SelectBlogPostImage = (p: {
               placeholder="Search..."
               className="w-full pr-8"
               value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                setOpen(true);
-              }}
-              onFocus={() => inputRef.current?.focus()}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onFocus={() => setOpen(true)}
               onKeyDown={handleKeyDown}
             />
             {searchTerm.length > 0 && (
               <button
                 className="absolute right-2 top-1/2 -translate-y-1/2 rounded-sm p-1 text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                 onClick={() => {
-                  setSearchTerm("");
+                  setSelectedValue(undefined);
                   inputRef.current?.focus();
                 }}
               >
@@ -105,7 +107,10 @@ export const SelectBlogPostImage = (p: {
                     className={`flex cursor-pointer items-center justify-between gap-4 px-4 py-2 hover:bg-accent hover:text-accent-foreground ${
                       selectedIndex === index ? "bg-accent text-accent-foreground" : ""
                     }`}
-                    onClick={() => handleSelect(blogPostImageRecord)}
+                    onClick={() => {
+                      setSelectedValue(blogPostImageRecord);
+                      setOpen(false);
+                    }}
                     onMouseEnter={() => setSelectedIndex(index)}
                   >
                     <div className="flex-1 overflow-hidden overflow-ellipsis whitespace-nowrap text-sm">
