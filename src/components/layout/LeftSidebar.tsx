@@ -147,6 +147,16 @@ export function LeftSidebar() {
                   All Blog Posts
                 </SidebarButton>
               )}
+            {currentUserStore.data.status === "loggedIn" &&
+              currentUserStore.data.user.role === "admin" && (
+                <SidebarButton
+                  href="/admin/all-blog-post-images"
+                  iconName="Eye"
+                  isHighlighted={router.pathname === "/admin/all-blog-post-images"}
+                >
+                  All Blog Post Images
+                </SidebarButton>
+              )}
             <SidebarButton iconName="LogOut" isHighlighted={false} onClick={() => logout({ pb })}>
               Log Out
             </SidebarButton>
