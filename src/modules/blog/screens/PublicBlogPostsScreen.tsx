@@ -37,7 +37,7 @@ export const PublicBlogPostsScreen = () => {
             {blogPostRecordsWithImage.map(({ blogPostRecord, blogPostImageRecord }) => (
               <BlogPostSummaryCard
                 key={blogPostRecord.id}
-                onClick={() => router.push(`/admin/blog-post/${blogPostRecord.id}`)}
+                onClick={() => router.push(`/blog-post/${blogPostRecord.id}`)}
                 blogPostRecord={blogPostRecord}
                 blogPostImageRecord={blogPostImageRecord}
               />
